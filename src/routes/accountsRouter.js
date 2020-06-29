@@ -68,7 +68,7 @@ router.delete("/", async (req, res) => {
             throw new Error("Dados não encontrados!"); 
         }
 
-        const dadosQdte  =  await accountModel.count({ agencia: req.body.agencia});
+        const dadosQdte  =  await accountModel.countDocuments({ agencia: req.body.agencia});
         if (dadosQdte) {
             res.send(`Conta excluída com sucesso!  Agência: ${ req.body.agencia }, contas ativas :  ${ dadosQdte }` );
         } else {
@@ -125,6 +125,10 @@ router.post("/transferencia", async (req, res) => {
 //Crie um endpoint para consultar a média do saldo dos clientes de determinada agência. O endpoint deverá receber como parametro a “agência” e deverá retornar o balance médio da conta..
 router.get("/media/:agencia", async (req, res) => {
     try {   
+        if (req.params.agencia <= 0) {
+            throw new Error("Agência deverá ser maior que 0!"); 
+        };
+
         const dados  =  await accountModel.aggregate(
             [ { $match: {agencia: parseInt(req.params.agencia)}},
               {$group: { _id: null, media: { $avg: "$balance"}}}
@@ -137,6 +141,84 @@ router.get("/media/:agencia", async (req, res) => {
         const media = dados[0].media.toFixed(2);
         if (media > 0) {
             res.send(`Balance médio é : ${ media }`);
+        } else {
+            throw new Error("Dados não encontrados!");
+        }
+    } catch (error) {
+        res.status(400).send({ error: error.message });
+    }
+});
+
+//Crie um endpoint para consultar os clientes com o menor saldo em conta. O endpoint devera receber como parâmetro um valor numérico para determinar a quantidade de
+//clientes a serem listados, e o endpoint deverá retornar em ordem crescente pelo saldo a lista dos clientes (agência, conta, saldo)
+router.get("/menor/:qtde", async (req, res) => {
+    try {   
+        if (req.params.qtde <= 0) {
+            throw new Error("Quantidade deverá ser maior que 0!"); 
+        };
+
+        const dados  =  await accountModel.aggregate(
+            [
+              { $project: {agencia:1, conta:1, balance:1 }}, 
+              { $sort: { balance: 1 }},  
+              { $limit: parseInt(req.params.qtde) } 
+            ]);
+
+        if (dados) {
+            res.send(dados);
+        } else {
+            throw new Error("Dados não encontrados!");
+        }
+    } catch (error) {
+        res.status(400).send({ error: error.message });
+    }
+});
+
+//Crie um endpoint para consultar os clientes mais ricos do banco. O endpoint deverá receber como parâmetro um valor numérico para determinar a quantidade de clientes
+//a serem listados, e o endpoint deverá retornar em ordem decrescente pelo saldo, crescente pelo nome, a lista dos clientes (agência, conta, nome e saldo).
+router.get("/maior/:qtde", async (req, res) => {
+    try {   
+        if (req.params.qtde <= 0) {
+            throw new Error("Quantidade deverá ser maior que 0!"); 
+        };
+
+        const dados  =  await accountModel.aggregate(
+            [
+              { $project: {agencia:1, conta:1, name:1, balance:1 }}, 
+              { $sort: { balance: -1, name:1 }},  
+              { $limit: parseInt(req.params.qtde) } 
+            ]);
+
+        if (dados) {
+            res.send(dados);
+        } else {
+            throw new Error("Dados não encontrados!");
+        }
+    } catch (error) {
+        res.status(400).send({ error: error.message });
+    }
+});
+
+
+//Crie um endpoint que irá transferir o cliente com maior saldo em conta de cada
+//agência para a agência private agencia=99. O endpoint deverá retornar a lista dos clientes da agencia private.
+router.get("/private", async (req, res) => {
+    try {   
+      
+        //Buscar todas as agências diferentes de 99
+        const agencia  =  await accountModel.distinct("agencia", { agencia: { $ne: 99 } });
+
+        //Buscar conta com valor mais alto por agencia e mudar para agencia 99
+       for (const item of agencia) {
+            await accountModel.findOneAndUpdate({ agencia: item}, {$set: {agencia: 99}}, 
+            { useFindAndModify: false} ).sort({ "balance":-1})
+       }
+
+       // Listar todos os clientes da agencia 99
+        const dados  =  await accountModel.find({"agencia": 99}).sort({ "balance":-1});
+
+        if (dados) {
+            res.send(dados);
         } else {
             throw new Error("Dados não encontrados!");
         }
