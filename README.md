@@ -1,70 +1,66 @@
 # NodeJsMongoDB-Trabalho-Modulo4
 Trabalho com Nodejs e MongoDb do módulo4
 
-# NodeJsMongoDB-Trabalho-Modulo4
-Trabalho com Nodejs e MongoDb do m?dulo4
-
-O aluno dever? implementar uma API integrada ao MongoDB Atlas cujo o schema dos
-dados ser? definido pelo mongoose. Esta API ter? alguns endpoints para manipula??o dos
+O aluno deverá implementar uma API integrada ao MongoDB Atlas cujo o schema dos
+dados será definido pelo mongoose. Esta API terá alguns endpoints para manipulação dos
 dados.
 
 Atividades
-O aluno dever? baixar o arquivo com os dados para a carga inicial na base de dados e
+O aluno deverá baixar o arquivo com os dados para a carga inicial na base de dados e
 desempenhar as seguintes atividades:
 
-1. Criar um banco de dados no MongoDB Atlas, uma cole??o e importar os dados
-arquivo ?accounts.json? em sua cole??o.
+1. Criar um banco de dados no MongoDB Atlas, uma coleção e importar os dados
+arquivo “accounts.json” em sua coleção.
 
-2. Implementar um modelo (schema) para esta cole??o, considerando que todos os
-campos s?o requeridos e o campo balance n?o pode ser menor que 0.
+2. Implementar um modelo (schema) para esta coleção, considerando que todos os
+campos são requeridos e o campo balance não pode ser menor que 0.
 
-3. Criar o projeto my-bank-api para implementa??o dos endpoints.
+3. Criar o projeto my-bank-api para implementação dos endpoints.
 
-4. Crie um endpoint para registrar um dep?sito em uma conta. Este endpoint dever?
-receber como par?metros a ?agencia?, o n?mero da ?conta? e o valor do dep?sito.
-Ele dever? atualizar o ?balance? da conta, incrementando-o com o valor recebido
-como par?metro. O endpoint dever? validar se a conta informada existe, caso n?o
-exista dever? retornar um erro, caso exista retornar o saldo atual da conta.
+4. Crie um endpoint para registrar um depósito em uma conta. Este endpoint deverá
+receber como parâmetros a “agencia”, o número da “conta” e o valor do depósito.
+Ele deverá atualizar o “balance” da conta, incrementando-o com o valor recebido
+como parâmetro. O endpoint deverá validar se a conta informada existe, caso não
+exista deverá retornar um erro, caso exista retornar o saldo atual da conta.
 
-5. Crie um endpoint para registrar um saque em uma conta. Este endpoint dever?
-receber como par?metros a ?ag?ncia?, o n?mero da ?conta? e o valor do saque. Ele
-dever? atualizar o ?balance? da conta, decrementando-o com o valor recebido com
-par?metro e cobrando uma tarifa de saque de (1). O endpoint dever? validar se a
-conta informada existe, caso n?o exista dever? retornar um erro, caso exista retornar
-o saldo atual da conta. Tamb?m dever? validar se a conta possui saldo suficiente
-para aquele saque, se n?o tiver dever? retornar um erro, n?o permitindo assim que
+5. Crie um endpoint para registrar um saque em uma conta. Este endpoint deverá
+receber como parâmetros a “agência”, o número da “conta” e o valor do saque. Ele
+deverá atualizar o “balance” da conta, decrementando-o com o valor recebido com
+parâmetro e cobrando uma tarifa de saque de (1). O endpoint deverá validar se a
+conta informada existe, caso não exista deverá retornar um erro, caso exista retornar
+o saldo atual da conta. Também deverá validar se a conta possui saldo suficiente
+para aquele saque, se não tiver deverá retornar um erro, não permitindo assim que
 o saque fique negativo.
 
-6. Crie um endpoint para consultar o saldo da conta. Este endpoint dever? receber
-como par?metro a ?ag?ncia? e o n?mero da ?conta?, e dever? retornar seu ?balance?.
-Caso a conta informada n?o exista, retornar um erro.
+6. Crie um endpoint para consultar o saldo da conta. Este endpoint deverá receber
+como parâmetro a “agência” e o número da “conta”, e deverá retornar seu “balance”.
+Caso a conta informada não exista, retornar um erro.
 
-7. Crie um endpoint para excluir uma conta. Este endpoint dever? receber como
-par?metro a ?ag?ncia? e o n?mero da ?conta? da conta e retornar o n?mero de contas
-ativas para esta ag?ncia.
+7. Crie um endpoint para excluir uma conta. Este endpoint deverá receber como
+parâmetro a “agência” e o número da “conta” da conta e retornar o número de contas
+ativas para esta agência.
 
-8. Crie um endpoint para realizar transfer?ncias entre contas. Este endpoint dever?
-receber como par?metro o n?mero da ?conta? origem, o n?mero da ?conta? destino e
-o valor de transfer?ncia. Este endpoint deve validar se as contas s?o da mesma
-ag?ncia para realizar a transfer?ncia, caso seja de ag?ncias distintas o valor de tarifa
-de transferencia (8) deve ser debitado na ?conta? origem. O endpoint dever? retornar
+8. Crie um endpoint para realizar transferências entre contas. Este endpoint deverá
+receber como parâmetro o número da “conta” origem, o número da “conta” destino e
+o valor de transferência. Este endpoint deve validar se as contas são da mesma
+agência para realizar a transferência, caso seja de agências distintas o valor de tarifa
+de transferencia (8) deve ser debitado na “conta” origem. O endpoint deverá retornar
 o saldo da conta origem.
 
-9. Crie um endpoint para consultar a m?dia do saldo dos clientes de determinada
-ag?ncia. O endpoint dever? receber como parametro a ?ag?ncia? e dever? retornar
-o balance m?dio da conta.
+9. Crie um endpoint para consultar a média do saldo dos clientes de determinada
+agência. O endpoint deverá receber como parametro a “agência” e deverá retornar
+o balance médio da conta.
 
 10. Crie um endpoint para consultar os clientes com o menor saldo em conta. O endpoint
-devera receber como par?metro um valor num?rico para determinar a quantidade de
-clientes a serem listados, e o endpoint dever? retornar em ordem crescente pelo
-saldo a lista dos clientes (ag?ncia, conta, saldo).
+devera receber como parâmetro um valor numérico para determinar a quantidade de
+clientes a serem listados, e o endpoint deverá retornar em ordem crescente pelo
+saldo a lista dos clientes (agência, conta, saldo).
 
-11. Crie um endpoint para consultar os clientes mais ricos do banco. O endpoint dever?
-receber como par?metro um valor num?rico para determinar a quantidade de clientes
-a serem listados, e o endpoint dever? retornar em ordem decrescente pelo saldo,
-crescente pelo nome, a lista dos clientes (ag?ncia, conta, nome e saldo).
+11. Crie um endpoint para consultar os clientes mais ricos do banco. O endpoint deverá
+receber como parâmetro um valor numérico para determinar a quantidade de clientes
+a serem listados, e o endpoint deverá retornar em ordem decrescente pelo saldo,
+crescente pelo nome, a lista dos clientes (agência, conta, nome e saldo).
 
-12. Crie um endpoint que ir? transferir o cliente com maior saldo em conta de cada
-ag?ncia para a ag?ncia private agencia=99. O endpoint dever? retornar a lista dos
+12. Crie um endpoint que irá transferir o cliente com maior saldo em conta de cada
+agência para a agência private agencia=99. O endpoint deverá retornar a lista dos
 clientes da agencia private.
-
